@@ -10,7 +10,7 @@ cache:
 stages:
   - name: Building
   - name: Testing
-  - name: Deployement
+  - name: Deployment
 
 jobs:
   include:
@@ -18,11 +18,11 @@ jobs:
       before_script:
         - chmod +x ./gradlew  # Ensure gradlew is executable
       script:
-        - ./gradlew clean compileJava
+        - ./gradlew clean build  # Clean and build the project
 
     - stage: Testing
       before_script:
-        - chmod +x ./gradlew  # Ensure gradlew is executable .
+        - chmod +x ./gradlew  # Ensure gradlew is executable
       script:
         - ./gradlew test
       after_failure:
@@ -30,9 +30,10 @@ jobs:
       after_success:
         - echo "Tests passed successfully."
     
-    - stage: Deployement
+    - stage: Deployment
       script:
-        - java -jar ./build/libs/hello-world-java-V1.jar
+        - ls ./build/libs  # Check if the JAR exists
+        - java -jar ./build/libs/hello-world-java-V1.jar  # Run the JAR file
 
 notifications:
   email:
